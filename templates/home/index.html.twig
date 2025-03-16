@@ -4,27 +4,6 @@
 {% block title %}Page d'Accueil{% endblock %}
 
 {% block body %}
-    {# Navbar #}
-    <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Mon Site</a>
-        <div class="collapse navbar-collapse">
-            <ul class="navbar-nav mr-auto">
-                <li class="nav-item"><a class="nav-link" href="#">Fake Item 1</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Fake Item 2</a></li>
-                <li class="nav-item"><a class="nav-link" href="#">Fake Item 3</a></li>
-            </ul>
-            <ul class="navbar-nav ml-auto">
-                {% if app.user %}
-                    <li class="nav-item"><a class="nav-link" href="{{ path('app_logout') }}">Logout</a></li>
-                {% else %}
-                    <li class="nav-item"><a class="nav-link" href="{{ path('app_login') }}">Login</a></li>
-                    <li class="nav-item"><a class="nav-link" href="{{ path('app_register') }}">Register</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </nav>
-
-    {# Contenu Principal #}
     <div class="container mt-5">
         <h1>Bienvenue sur la Page d'Accueil</h1>
         <p>Ceci est un exemple de page d'accueil avec une navbar et des fonctionnalités d'authentification.</p>
