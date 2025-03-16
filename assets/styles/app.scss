@@ -1,3 +1,70 @@
 @import './_variables';
 @import './_mixins';
 @import './_placeholders';
+
+// Styles de base
+body {
+  font-family: $font-stack;
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+// Navbar
+.navbar {
+  height: $navbar-height;
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #ddd;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 20px;
+
+  .navbar-brand {
+    font-size: 1.5em;
+    color: $primary-color;
+  }
+
+  .navbar-nav {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+
+    .nav-item {
+      a {
+        @include nav-link;
+      }
+    }
+  }
+}
+
+// Boutons
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  color: #fff;
+  background-color: $primary-color;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: darken($primary-color, 10%);
+  }
+}
+
+// Contenu principal
+.container {
+  padding: 20px;
+
+  h1 {
+    color: $primary-color;
+  }
+
+  p {
+    color: $secondary-color;
+  }
+}

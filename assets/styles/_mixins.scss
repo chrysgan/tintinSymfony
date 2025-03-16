@@ -1,0 +1,16 @@
+@mixin flex-center {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  @mixin nav-link {
+    text-decoration: none;
+    color: $secondary-color;
+    padding: 10px 15px;
+    transition: color 0.3s;
+  
+    &:hover {
+      color: $primary-color;
+    }
+  }
