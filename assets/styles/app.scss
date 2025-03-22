@@ -49,7 +49,7 @@ body {
   border-radius: 5px;
   cursor: pointer;
   text-decoration: none;
-  transition: background-color 0.3s;
+  transition: background-color 0.1s;
 
   &:hover {
     background-color: darken($primary-color, 10%);
@@ -67,4 +67,30 @@ body {
   p {
     color: $secondary-color;
   }
+}
+
+.form-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  
+}
+
+.form-row {
+  // padding: 10px;
+  margin: 5px;
+  background-color: $secondary-color;
+  border-radius: 3px;
+  border: $primary-color 1px solid;
+}
+
+.form-label {
+  padding: 0 10px 0 20px;
+  // margin: 55px 5px 0 5px;
+}
+
+.form-input {
+  padding: 5px;
+  margin: 5px;
 }

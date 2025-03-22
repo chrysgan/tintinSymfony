@@ -7,17 +7,37 @@
         <div class="alert alert-danger" role="alert">{{ flash_error }}</div>
     {% endfor %}
 
-    <h1>Register</h1>
+    <h1>Créer son compte</h1>
 
     {{ form_errors(registrationForm) }}
 
     {{ form_start(registrationForm) }}
-        {{ form_row(registrationForm.email) }}
-        {{ form_row(registrationForm.plainPassword, {
-            label: 'Password'
-        }) }}
-        {{ form_row(registrationForm.agreeTerms) }}
+        <div class="form-flex">
+            {{ form_row(registrationForm.nom, {
+                'label':'Nom',
+                'attr': {'class': 'form-input'},
+                'label_attr': {'class': 'form-label'},
+                'row_attr': {'class': 'form-row'}
+            }) }}
+            {{ form_row(registrationForm.email, {
+                'label':'Email',
+                'attr': {'class': 'form-input'},
+                'label_attr': {'class': 'form-label'},
+                'row_attr': {'class': 'form-row'}
+            }) }}
+            {{ form_row(registrationForm.plainPassword, {
+                'label':'Mot de passe',
+                'attr': {'class': 'form-input'},
+                'label_attr': {'class': 'form-label'},
+                'row_attr': {'class': 'form-row'}
+            }) }}
+            {{ form_row(registrationForm.newsletter, {
+                'attr': {'class': 'form-input'},
+                'label_attr': {'class': 'form-label'},
+                'row_attr': {'class': 'form-row'}
+            }) }}
+            <button type="submit" class="btn">S'enregistrer</button>
+        </div>    
 
-        <button type="submit" class="btn">Register</button>
     {{ form_end(registrationForm) }}
 {% endblock %}
