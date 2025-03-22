@@ -4,13 +4,13 @@
     align-items: center;
   }
   
-  @mixin nav-link {
-    text-decoration: none;
+@mixin nav-link {
+  text-decoration: none;
+  color: $primary-color;
+  padding: 10px 10px;
+  transition: color 0.1s;
+
+  &:hover {
     color: $secondary-color;
-    padding: 10px 15px;
-    transition: color 0.3s;
-  
-    &:hover {
-      color: $primary-color;
-    }
   }
+}
