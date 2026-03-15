@@ -40,6 +40,10 @@ class Pays
         $this->editeurs = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getNomfr();
+    }
     public function getIdpays(): ?int
     {
         return $this->idpays;
