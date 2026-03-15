@@ -26,8 +26,11 @@ class EditeurCrudController extends AbstractCrudController
             ->hideWhenCreating();
         yield TextField::new('nom');
         yield TextEditorField::new('description');
-        // TODO : Faire la gestion du chargement de l'image + le stockage
-        yield TextField::new('image');
+        // TODO : Revoir pour supprimer l'ancienne image en cas de mise à jour de l'image de l'editeur ou de suppression de l'editeur
+        yield ImageField::new('image')
+            ->setBasePath('images/editors')
+            ->setUploadDir('public/images/editors')
+            ->setUploadedFileNamePattern('[slug]-[timestamp].[extension]');
         yield IntegerField::new('anneeCreation');
         yield IntegerField::new('anneeFermeture');
         yield TextareaField::new('commentaire');
