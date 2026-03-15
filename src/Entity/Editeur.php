@@ -33,6 +33,10 @@ class Editeur
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentaire = null;
 
+    #[ORM\ManyToOne(inversedBy: 'editeurs')]
+    #[ORM\JoinColumn(name: 'idpays', referencedColumnName: 'idpays', nullable: false)]
+    private ?Pays $idpays = null;
+
     public function getIdediteur(): ?int
     {
         return $this->idediteur;
@@ -113,6 +117,18 @@ class Editeur
     public function setCommentaire(?string $commentaire): static
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    public function getIdpays(): ?Pays
+    {
+        return $this->idpays;
+    }
+
+    public function setIdpays(?Pays $idpays): static
+    {
+        $this->idpays = $idpays;
 
         return $this;
     }

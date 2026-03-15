@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PaysRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: PaysRepository::class)]
@@ -26,6 +28,17 @@ class Pays
 
     #[ORM\Column(length: 45)]
     private ?string $nomen = null;
+
+    /**
+     * @var Collection<int, Editeur>
+     */
+    #[ORM\OneToMany(targetEntity: Editeur::class, mappedBy: 'idpays')]
+    private Collection $editeurs;
+
+    public function __construct()
+    {
+        $this->editeurs = new ArrayCollection();
+    }
 
     public function getIdpays(): ?int
     {
@@ -95,6 +108,36 @@ class Pays
     public function setNomen(string $nomen): static
     {
         $this->nomen = $nomen;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Editeur>
+     */
+    public function getEditeurs(): Collection
+    {
+        return $this->editeurs;
+    }
+
+    public function addEditeur(Editeur $editeur): static
+    {
+        if (!$this->editeurs->contains($editeur)) {
+            $this->editeurs->add($editeur);
+            $editeur->setIdpays($this);
+        }
+
+        return $this;
+    }
+
+    public function removeEditeur(Editeur $editeur): static
+    {
+        if ($this->editeurs->removeElement($editeur)) {
+            // set the owning side to null (unless already changed)
+            if ($editeur->getIdpays() === $this) {
+                $editeur->setIdpays(null);
+            }
+        }
 
         return $this;
     }
