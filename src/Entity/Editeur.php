@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\EditeurRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -36,6 +38,17 @@ class Editeur
     #[ORM\ManyToOne(inversedBy: 'editeurs')]
     #[ORM\JoinColumn(name: 'idpays', referencedColumnName: 'idpays', nullable: false)]
     private ?Pays $idpays = null;
+
+    /**
+     * @var Collection<int, Objet>
+     */
+    #[ORM\OneToMany(targetEntity: Objet::class, mappedBy: 'idediteur')]
+    private Collection $objets;
+
+    public function __construct()
+    {
+        $this->objets = new ArrayCollection();
+    }
 
     public function getIdediteur(): ?int
     {
@@ -129,6 +142,36 @@ class Editeur
     public function setIdpays(?Pays $idpays): static
     {
         $this->idpays = $idpays;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Objet>
+     */
+    public function getObjets(): Collection
+    {
+        return $this->objets;
+    }
+
+    public function addObjet(Objet $objet): static
+    {
+        if (!$this->objets->contains($objet)) {
+            $this->objets->add($objet);
+            $objet->setIdediteur($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjet(Objet $objet): static
+    {
+        if ($this->objets->removeElement($objet)) {
+            // set the owning side to null (unless already changed)
+            if ($objet->getIdediteur() === $this) {
+                $objet->setIdediteur(null);
+            }
+        }
 
         return $this;
     }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\SerieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -29,6 +31,17 @@ class Serie
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $commentaire = null;
+
+    /**
+     * @var Collection<int, Objet>
+     */
+    #[ORM\OneToMany(targetEntity: Objet::class, mappedBy: 'idserie')]
+    private Collection $objets;
+
+    public function __construct()
+    {
+        $this->objets = new ArrayCollection();
+    }
 
     public function getIdserie(): ?int
     {
@@ -98,6 +111,36 @@ class Serie
     public function setCommentaire(?string $commentaire): static
     {
         $this->commentaire = $commentaire;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Objet>
+     */
+    public function getObjets(): Collection
+    {
+        return $this->objets;
+    }
+
+    public function addObjet(Objet $objet): static
+    {
+        if (!$this->objets->contains($objet)) {
+            $this->objets->add($objet);
+            $objet->setIdserie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjet(Objet $objet): static
+    {
+        if ($this->objets->removeElement($objet)) {
+            // set the owning side to null (unless already changed)
+            if ($objet->getIdserie() === $this) {
+                $objet->setIdserie(null);
+            }
+        }
 
         return $this;
     }

@@ -47,10 +47,12 @@ class DashboardController extends AbstractDashboardController
     public function configureMenuItems(): iterable
     {
         yield MenuItem::linkToDashboard('Dashboard', 'fa fa-home');
-        yield MenuItem::linkTo(PaysCrudController::class, 'Pays', 'fa-duotone fa-solid fa-earth-europe');
-        yield MenuItem::linkTo(SerieCrudController::class, 'Serie', 'fa-brands fa-elementor');
+        yield MenuItem::linkTo(ObjetCrudController::class, 'Objet', 'fa-duotone fa-solid fa-cube');
         yield MenuItem::linkTo(EditeurCrudController::class, 'Editeur', 'fas fa-list');
+        yield MenuItem::linkTo(SerieCrudController::class, 'Serie', 'fa-brands fa-elementor');
         yield MenuItem::linkTo(CategorieCrudController::class, 'Catégorie', 'fa-duotone fa-solid fa-layer-group');
+        yield MenuItem::linkTo(PaysCrudController::class, 'Pays', 'fa-duotone fa-solid fa-earth-europe');
         yield MenuItem::linkTo(PersonnageCrudController::class, 'Personnage', 'fa-duotone fa-solid fa-people-group');
+
     }
 }

@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\CategorieRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
@@ -21,6 +23,17 @@ class Categorie
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
+
+    /**
+     * @var Collection<int, Objet>
+     */
+    #[ORM\OneToMany(targetEntity: Objet::class, mappedBy: 'idcategorie')]
+    private Collection $objets;
+
+    public function __construct()
+    {
+        $this->objets = new ArrayCollection();
+    }
 
     public function getIdcategorie(): ?int
     {
@@ -66,6 +79,36 @@ class Categorie
     public function setImage(?string $image): static
     {
         $this->image = $image;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Objet>
+     */
+    public function getObjets(): Collection
+    {
+        return $this->objets;
+    }
+
+    public function addObjet(Objet $objet): static
+    {
+        if (!$this->objets->contains($objet)) {
+            $this->objets->add($objet);
+            $objet->setIdcategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjet(Objet $objet): static
+    {
+        if ($this->objets->removeElement($objet)) {
+            // set the owning side to null (unless already changed)
+            if ($objet->getIdcategorie() === $this) {
+                $objet->setIdcategorie(null);
+            }
+        }
 
         return $this;
     }
