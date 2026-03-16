@@ -51,5 +51,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(SerieCrudController::class, 'Serie', 'fa-brands fa-elementor');
         yield MenuItem::linkTo(EditeurCrudController::class, 'Editeur', 'fas fa-list');
         yield MenuItem::linkTo(CategorieCrudController::class, 'Catégorie', 'fa-duotone fa-solid fa-layer-group');
+        yield MenuItem::linkTo(PersonnageCrudController::class, 'Personnage', 'fa-duotone fa-solid fa-people-group');
     }
 }
