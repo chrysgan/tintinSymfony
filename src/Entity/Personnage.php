@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\PersonnageRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -32,6 +34,18 @@ class Personnage
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $description = null;
 
+    #[ORM\ManyToMany(targetEntity: Objet::class, mappedBy: 'personnages')]
+    private Collection $objets;
+
+    public function __construct()
+    {
+        $this->objets = new ArrayCollection();
+    }
+
+    public function __toString(): string
+    {
+        return $this->getNom().' '.$this->getPrenom().' '.$this->getAlias();
+    }
     public function getId(): ?int
     {
         return $this->id;
@@ -115,4 +129,29 @@ class Personnage
 
         return $this;
     }
+
+    public function getObjets(): Collection
+    {
+        return $this->objets;
+    }
+
+    public function addObjet(Objet $objet): static
+    {
+        if (!$this->objets->contains($objet)) {
+            $this->objets->add($objet);
+            $objet->addPersonnage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjet(Objet $objet): static
+    {
+        if ($this->objets->removeElement($objet)) {
+            $objet->removePersonnage($this);
+        }
+
+        return $this;
+    }
+
 }

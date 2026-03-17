@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ObjetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
@@ -71,6 +73,17 @@ class Objet
     #[ORM\ManyToOne(inversedBy: 'objets')]
     #[ORM\JoinColumn(name: 'idcategorie', referencedColumnName: 'idcategorie', nullable: false)]
     private ?Categorie $idcategorie = null;
+
+    #[ORM\ManyToMany(targetEntity: Personnage::class, inversedBy: 'objets')]
+    #[ORM\JoinTable(name: 'objet_personnage')]
+    #[ORM\JoinColumn(name: 'idobjet', referencedColumnName: 'id')]
+    #[ORM\InverseJoinColumn(name: 'idpersonnage', referencedColumnName: 'id')]
+    private Collection $personnages;
+
+    public function __construct()
+    {
+        $this->personnages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -296,6 +309,27 @@ class Objet
     public function setIdcategorie(?Categorie $idcategorie): static
     {
         $this->idcategorie = $idcategorie;
+
+        return $this;
+    }
+
+    public function getPersonnages(): Collection
+    {
+        return $this->personnages;
+    }
+
+    public function addPersonnage(Personnage $personnage): static
+    {
+        if (!$this->personnages->contains($personnage)) {
+            $this->personnages->add($personnage);
+        }
+
+        return $this;
+    }
+
+    public function removePersonnage(Personnage $personnage): static
+    {
+        $this->personnages->removeElement($personnage);
 
         return $this;
     }
