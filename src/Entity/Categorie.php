@@ -35,6 +35,11 @@ class Categorie
         $this->objets = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
+
     public function getIdcategorie(): ?int
     {
         return $this->idcategorie;

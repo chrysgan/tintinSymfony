@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: SerieRepository::class)]
 class Serie
 {
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -43,6 +43,10 @@ class Serie
         $this->objets = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
     public function getIdserie(): ?int
     {
         return $this->idserie;

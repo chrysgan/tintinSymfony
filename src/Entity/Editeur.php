@@ -11,7 +11,7 @@ use Doctrine\ORM\Mapping as ORM;
 #[ORM\Entity(repositoryClass: EditeurRepository::class)]
 class Editeur
 {
-    
+
     #[ORM\Id]
     #[ORM\GeneratedValue]
     #[ORM\Column]
@@ -50,6 +50,10 @@ class Editeur
         $this->objets = new ArrayCollection();
     }
 
+    public function __toString(): string
+    {
+        return $this->getNom();
+    }
     public function getIdediteur(): ?int
     {
         return $this->idediteur;
