@@ -57,6 +57,7 @@ class ObjetCrudController extends AbstractCrudController
             ->autocomplete();
         yield AssociationField::new('idserie', 'Série');
         yield AssociationField::new('idediteur', 'Editeur');
+        yield AssociationField::new('idoserie', 'Série');
         yield TextField::new('rangement');
         yield MoneyField::new('montantAchat')
             ->setCurrency('EUR')
