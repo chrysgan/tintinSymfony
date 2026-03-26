@@ -15,6 +15,7 @@
 
 ###> symfony/asset-mapper ###
 /public/assets/
+/public/images/
 /assets/vendor/
 
 #phpstorm
