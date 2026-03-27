@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\ObjetRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Schema\DefaultExpression\CurrentTimestamp;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
@@ -68,6 +70,18 @@ class Objet
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
     private ?string $descriptionPossession = null;
+
+    /**
+     * @var Collection<int, Personnage>
+     */
+    #[ORM\ManyToMany(targetEntity: Personnage::class, inversedBy: 'objets')]
+    #[ORM\JoinTable(name: 'objet_personnage')]
+    private Collection $personnages;
+
+    public function __construct()
+    {
+        $this->personnages = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -293,6 +307,30 @@ class Objet
     public function setDescriptionPossession(?string $descriptionPossession): static
     {
         $this->descriptionPossession = $descriptionPossession;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Personnage>
+     */
+    public function getPersonnages(): Collection
+    {
+        return $this->personnages;
+    }
+
+    public function addPersonnage(Personnage $personnage): static
+    {
+        if (!$this->personnages->contains($personnage)) {
+            $this->personnages->add($personnage);
+        }
+
+        return $this;
+    }
+
+    public function removePersonnage(Personnage $personnage): static
+    {
+        $this->personnages->removeElement($personnage);
 
         return $this;
     }
