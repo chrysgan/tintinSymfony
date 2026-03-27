@@ -51,7 +51,7 @@ class Personnage
             return $this->getPrenom().' '.$this->getNom();
         }
         else {
-            return $this->getAlias();
+            return $this->getAlias() ?? '';
         }
     }
     public function getId(): ?int

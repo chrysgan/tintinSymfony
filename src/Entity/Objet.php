@@ -78,9 +78,16 @@ class Objet
     #[ORM\JoinTable(name: 'objet_personnage')]
     private Collection $personnages;
 
+    /**
+     * @var Collection<int, ObjetImage>
+     */
+    #[ORM\OneToMany(targetEntity: ObjetImage::class, mappedBy: 'objet')]
+    private Collection $objetImages;
+
     public function __construct()
     {
         $this->personnages = new ArrayCollection();
+        $this->objetImages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -331,6 +338,36 @@ class Objet
     public function removePersonnage(Personnage $personnage): static
     {
         $this->personnages->removeElement($personnage);
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, ObjetImage>
+     */
+    public function getObjetImages(): Collection
+    {
+        return $this->objetImages;
+    }
+
+    public function addObjetImage(ObjetImage $objetImage): static
+    {
+        if (!$this->objetImages->contains($objetImage)) {
+            $this->objetImages->add($objetImage);
+            $objetImage->setObjet($this);
+        }
+
+        return $this;
+    }
+
+    public function removeObjetImage(ObjetImage $objetImage): static
+    {
+        if ($this->objetImages->removeElement($objetImage)) {
+            // set the owning side to null (unless already changed)
+            if ($objetImage->getObjet() === $this) {
+                $objetImage->setObjet(null);
+            }
+        }
 
         return $this;
     }

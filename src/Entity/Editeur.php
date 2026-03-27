@@ -50,7 +50,7 @@ class Editeur
 
     public function __toString()
     {
-        return $this->getNom();
+        return $this->getNom() ?? '';
     }
 
     public function getId(): ?int

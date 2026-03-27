@@ -43,7 +43,7 @@ class Pays
 
     public function __toString():string
     {
-        return $this->getNomFr();
+        return $this->getNomFr() ?? '';
     }
 
     public function getId(): ?int

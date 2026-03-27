@@ -33,6 +33,7 @@ class ObjetCrudController extends AbstractCrudController
         yield AssociationField::new('editeur');
         yield AssociationField::new('categorie');
         yield AssociationField::new('personnages');
+        yield AssociationField::new('objetImages');
         yield NumberField::new('taille');
         yield TextareaField::new('description');
         yield TextField::new('reference');
