@@ -6,8 +6,11 @@ use App\Repository\CategorieRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: CategorieRepository::class)]
+#[Vich\Uploadable]
 class Categorie
 {
     #[ORM\Id]
@@ -24,11 +27,17 @@ class Categorie
     #[ORM\Column(length: 255)]
     private ?string $image = null;
 
+    #[Vich\UploadableField(mapping: 'categorie', fileNameProperty: 'image')]
+    private ?File $imageFile = null;
+
     /**
      * @var Collection<int, Objet>
      */
     #[ORM\OneToMany(targetEntity: Objet::class, mappedBy: 'categorie')]
     private Collection $objets;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     public function __construct()
     {
@@ -115,5 +124,28 @@ class Categorie
         }
 
         return $this;
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+        $this->updatedAt = new \DateTimeImmutable();
     }
 }

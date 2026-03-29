@@ -7,8 +7,11 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\File;
+use Vich\UploaderBundle\Mapping\Annotation as Vich;
 
 #[ORM\Entity(repositoryClass: EditeurRepository::class)]
+#[Vich\Uploadable]
 class Editeur
 {
     #[ORM\Id]
@@ -24,6 +27,9 @@ class Editeur
 
     #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
+
+    #[Vich\UploadableField(mapping: 'editeur', fileNameProperty: 'image')]
+    private ?File $imageFile = null;
 
     #[ORM\Column(nullable: true)]
     private ?int $anneeCreation = null;
@@ -42,6 +48,9 @@ class Editeur
      */
     #[ORM\OneToMany(targetEntity: Objet::class, mappedBy: 'editeur')]
     private Collection $objets;
+
+    #[ORM\Column(nullable: true)]
+    private ?\DateTimeImmutable $updatedAt = null;
 
     public function __construct()
     {
@@ -178,4 +187,28 @@ class Editeur
 
         return $this;
     }
+
+    public function getImageFile(): ?File
+    {
+        return $this->imageFile;
+    }
+
+    public function setImageFile(?File $imageFile): void
+    {
+        $this->imageFile = $imageFile;
+        $this->updatedAt= new \DateTimeImmutable();
+    }
+
+    public function getUpdatedAt(): ?\DateTimeImmutable
+    {
+        return $this->updatedAt;
+    }
+
+    public function setUpdatedAt(?\DateTimeImmutable $updatedAt): static
+    {
+        $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+    
 }

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Response;
 #[AdminDashboard(routePath: '/admin', routeName: 'admin')]
 class DashboardController extends AbstractDashboardController
 {
+    // TODO : faire mes requetes persos d'administration
     public function index(): Response
     {
 //        return parent::index();
