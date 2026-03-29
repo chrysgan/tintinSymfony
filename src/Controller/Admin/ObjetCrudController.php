@@ -3,10 +3,12 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Objet;
+use App\Form\ObjetImageType;
 use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\AssociationField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\BooleanField;
+use EasyCorp\Bundle\EasyAdminBundle\Field\CollectionField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\DateTimeField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -26,7 +28,7 @@ class ObjetCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
 {
     return $crud
-        ->setPaginatorPageSize(200); // nombre d'éléments par page
+        ->setPaginatorPageSize(20); // nombre d'éléments par page
 }
 
     public function configureFields(string $pageName): iterable
@@ -48,7 +50,7 @@ class ObjetCrudController extends AbstractCrudController
             ->setColumns(2)
             ->setDisabled()
             ->hideOnIndex();
-        // yield FormField::addFieldset('test');
+        
         yield FormField::addRow();
         yield TextField::new('nom')->setColumns(4);
         yield TextField::new('reference')
@@ -85,12 +87,18 @@ class ObjetCrudController extends AbstractCrudController
         yield FormField::addRow();
         yield AssociationField::new('personnages')
             ->hideOnIndex();
-        // TODO: Afficher les images
         yield TextareaField::new('description')
             ->hideOnIndex();
+        
         yield FormField::addTab('Images');
-        yield AssociationField::new('objetImages')
-            ->hideOnIndex();
+        yield CollectionField::new('objetImages')
+            ->setEntryType(ObjetImageType::class)
+            ->allowAdd()
+            ->allowDelete()
+            ->setFormTypeOption('by_reference', false)
+            ->onlyOnForms()
+            ->renderExpanded();
+        
         yield FormField::addTab('Possession');
         yield BooleanField::new('estPossede');
         yield TextField::new('rangement')

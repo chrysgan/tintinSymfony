@@ -24,7 +24,7 @@ class Categorie
     #[ORM\Column(length: 25)]
     private ?string $nom = null;
 
-    #[ORM\Column(length: 255)]
+    #[ORM\Column(length: 255, nullable: true)]
     private ?string $image = null;
 
     #[Vich\UploadableField(mapping: 'categorie', fileNameProperty: 'image')]
@@ -89,9 +89,10 @@ class Categorie
         return $this->image;
     }
 
-    public function setImage(string $image): static
+    public function setImage(?string $image): static
     {
         $this->image = $image;
+        $this->updatedAt = new \DateTimeImmutable();
 
         return $this;
     }

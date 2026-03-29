@@ -2,6 +2,7 @@
 
 namespace App\Entity;
 
+use App\Entity\Personnage;
 use App\Repository\ObjetRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -47,7 +48,7 @@ class Objet
     #[ORM\Column(nullable: true)]
     private ?int $mois = null;
 
-    #[ORM\Column(options: ['default' => new CurrentTimestamp()])]
+    #[ORM\Column(nullable:false)]
     private ?\DateTimeImmutable $createdAt = null;
 
     #[ORM\Column(nullable: true)]
@@ -81,13 +82,17 @@ class Objet
     /**
      * @var Collection<int, ObjetImage>
      */
-    #[ORM\OneToMany(targetEntity: ObjetImage::class, mappedBy: 'objet')]
+    #[ORM\OneToMany(targetEntity: ObjetImage::class, mappedBy: 'objet', cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $objetImages;
+    // persist : quand tu ajoutes une image depuis le formulaire de l’objet, Doctrine la sauvegarde aussi
+    // remove : si tu supprimes l’objet, ses images suivent
+    // orphanRemoval : si tu retires une image de la collection dans le formulaire, elle est supprimée en base
 
     public function __construct()
     {
         $this->personnages = new ArrayCollection();
         $this->objetImages = new ArrayCollection();
+        $this->createdAt = new \DateTimeImmutable();
     }
 
     public function getId(): ?int

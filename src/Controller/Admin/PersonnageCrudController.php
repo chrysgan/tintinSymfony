@@ -16,10 +16,11 @@ use Vich\UploaderBundle\Form\Type\VichImageType;
 class PersonnageCrudController extends AbstractCrudController
 {
     public function configureCrud(Crud $crud): Crud
-{
-    return $crud
-        ->setPaginatorPageSize(200); // nombre d'éléments par page
-}
+    {
+        return $crud
+            ->setPaginatorPageSize(200) // nombre d'éléments par page
+            ->setDefaultSort(['alias'=>'asc']);
+    }
     public static function getEntityFqcn(): string
     {
         return Personnage::class;
@@ -27,6 +28,7 @@ class PersonnageCrudController extends AbstractCrudController
 
     public function configureFields(string $pageName): iterable
     {
+        // TODO : quand il n'y a pas d'image null s'affiche dans l'index
         yield IdField::new('id')
             ->setDisabled()
             ->hideOnIndex()
@@ -39,13 +41,19 @@ class PersonnageCrudController extends AbstractCrudController
         
         
         yield FormField::addRow();
-        yield TextField::new('prenom','Prénom')->setColumns(3);
-        yield TextField::new('nom','Nom')->setColumns(3);
+        yield TextField::new('prenom','Prénom')
+            ->setColumns(3)
+            ->formatValue(fn ($value) => $value ?: ' ');
+        yield TextField::new('nom','Nom')
+            ->setColumns(3)
+            ->formatValue(fn ($value) => $value ?: ' ');
          yield ImageField::new('image')
             ->hideOnForm()
+            // ->formatValue(fn ($value) => $value ?: ' ')
             ->setBasePath('/images/personnage');
 
-        yield TextareaField::new('description');
+        yield TextareaField::new('description')
+            ->formatValue(fn ($value) => $value ?: ' ');
 
         yield FormField::addRow();
         yield Field::new('imageFile', "Image")

@@ -37,13 +37,13 @@ class CategorieCrudController extends AbstractCrudController
             ->hideOnIndex()
             ->setDisabled();
         yield Field::new('imageFile', 'Fichier')
-        ->setFormType(VichImageType::class)
-        ->onlyOnForms()
-        ->setFormTypeOptions([
-            'required' => false,
-            'allow_delete' => true,
-            'download_uri' => false,
-            'image_uri' => true]
+            ->setFormType(VichImageType::class)
+            ->onlyOnForms()
+            ->setFormTypeOptions([
+                'required' => false,
+                'allow_delete' => true,
+                'download_uri' => true,
+                'image_uri' => true]
         );
     }
 }

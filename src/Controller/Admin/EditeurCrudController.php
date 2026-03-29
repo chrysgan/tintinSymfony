@@ -20,7 +20,8 @@ class EditeurCrudController extends AbstractCrudController
     public function configureCrud(Crud $crud): Crud
     {
         return $crud
-            ->setPaginatorPageSize(100); // nombre d'éléments par page
+            ->setPaginatorPageSize(100) // nombre d'éléments par page
+            ->setDefaultSort(['nom'=>'ASC']);
     }   
     
     public static function getEntityFqcn(): string
@@ -33,7 +34,8 @@ class EditeurCrudController extends AbstractCrudController
         yield TextField::new('nom')
             ->setColumns(4);
         yield AssociationField::new('pays','Pays')
-            ->setColumns(2);
+            ->setColumns(2)
+            ->formatValue(fn ($value) => $value ?: '-');
         yield IdField::new('id')
             ->setDisabled()
             ->hideOnIndex()

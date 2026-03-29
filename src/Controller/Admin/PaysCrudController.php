@@ -3,6 +3,7 @@
 namespace App\Controller\Admin;
 
 use App\Entity\Pays;
+use EasyCorp\Bundle\EasyAdminBundle\Config\Crud;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractCrudController;
 use EasyCorp\Bundle\EasyAdminBundle\Field\FormField;
 use EasyCorp\Bundle\EasyAdminBundle\Field\IdField;
@@ -11,6 +12,13 @@ use EasyCorp\Bundle\EasyAdminBundle\Field\TextField;
 
 class PaysCrudController extends AbstractCrudController
 {
+    public function configureCrud(Crud $crud): Crud
+    {
+        return $crud
+            ->setPaginatorPageSize(15) // nombre d'éléments par page
+            ->setDefaultSort(['alpha2'=>'asc']);
+    }
+
     public static function getEntityFqcn(): string
     {
         return Pays::class;
