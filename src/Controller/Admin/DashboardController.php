@@ -47,5 +47,6 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(CategorieCrudController::class, 'Catégorie', 'fa-duotone fa-solid fa-table-list');
         yield MenuItem::linkTo(PersonnageCrudController::class, 'Personnage', 'fa-duotone fa-solid fa-people-group');
         yield MenuItem::linkTo(PaysCrudController::class, 'Pays', 'fa-duotone fa-solid fa-earth-europe');
+        yield MenuItem::linkTo(UserCrudController::class, 'User', 'fa-duotone fa-solid fa-circle-user');
     }
 }
