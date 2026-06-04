@@ -1,3 +1,122 @@
+:root {
+    --main-color: black;
+    --bg-color:#f1efe9;
+}
+
+*, ::after, ::before  {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box ;
+}
+
+.fa-user {
+    color: var(--main-color)
+}
+
+@font-face {
+    font-family: "Tintin";
+    src: url("../fonts/TintinMajuscule.ttf");
+    font-weight: normal;
+    font-style: normal;
+    font-display: swap;
+}
+
+@font-face {
+    font-family: "TintinMin";
+    src: url("../fonts/TintinMinuscule.ttf");
+}
+
+.PoliceTintin {
+    font-family: Tintin;
+}
+
+.PoliceTintinMin {
+    font-family: "TintinMin";
+}
+
 body {
-    background-color: skyblue;
+    background-color: var(--bg-color);
+    margin: 0;
+    font-size: 1.5em;
+}
+
+.navbar {
+    position: sticky;
+    top:0;
+    font-family: "Tintin";
+    width: 100%;
+    padding: 1rem 5%;
+    background-color: var(--bg-color) ;
+    border-bottom: 1px solid var(--main-color);
+    margin-bottom: 5px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.logo {
+    font-size: 1.8em;
+    font-weight: 700;
+    letter-spacing: 1px;
+
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.logo img {
+    height: 40px;
+    width: auto;
+    /* padding-bottom: 2px; */
+}
+
+.nav-links {
+    list-style: none;
+    display: flex;
+    gap: 2rem;
+}
+
+.nav-links li a {
+    position: relative;
+    font-size: 1em;
+    font-weight: 500;
+    text-decoration: none;
+    transition: 0.2s;
+    color: var(--main-color);
+}
+
+.nav-links li a:hover {
+    text-shadow: 0 0 15px #363535;
+}
+
+.burger {
+  display: none;
+  font-size: 1em;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+/* Version mobile */
+@media (max-width: 768px) {
+  .burger {
+    display: block;
+  }
+
+  .nav-links {
+    display: none;
+    position: absolute;
+    top: 65px;
+    right: auto;
+    flex-direction: column;
+    /* background: #eeece6; */
+    padding: 20px;
+    gap: 15px;
+    border: 1px solid var(--main-color);
+    backdrop-filter: blur(4px);
+  }
+
+  .nav-links.active {
+    display: flex;
+  }
 }
