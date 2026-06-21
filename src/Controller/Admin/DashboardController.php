@@ -8,10 +8,11 @@ use EasyCorp\Bundle\EasyAdminBundle\Config\MenuItem;
 use EasyCorp\Bundle\EasyAdminBundle\Controller\AbstractDashboardController;
 use Symfony\Component\HttpFoundation\Response;
 
-#[AdminDashboard(routePath: '/admin', routeName: 'admin')]
+#[AdminDashboard(routePath: '/admin', routeName: 'app_admin')]
 class DashboardController extends AbstractDashboardController
 {
     // TODO : faire mes requetes persos d'administration
+    // TODO ; lien vers l'accueil
     public function index(): Response
     {
 //        return parent::index();
@@ -35,7 +36,8 @@ class DashboardController extends AbstractDashboardController
     public function configureDashboard(): Dashboard
     {
         return Dashboard::new()
-            ->setTitle('TintinSymfony');
+            ->setTitle('Admin TintinSymfony')
+            ->setDefaultColorScheme('dark');
     }
 
     public function configureMenuItems(): iterable

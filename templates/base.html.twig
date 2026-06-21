@@ -23,8 +23,9 @@
             <ul class= "nav-links" id="navLinks">
                 <li><a href="{{ url('app_home') }}">Accueil</a></li>
                 <li><a href="{{ url('app_gallery') }}">La galerie</a></li>
+                <li><a href="{{ url('app_admin') }}">Admin</a></li>
             </ul>
-            <a href="{{ url('app_test') }}"><i class="fa fa-fw fa-user"></i></a>
+            <a class="fa-color" href="{{ url('app_test') }}"><i class="fa-regular fa-user"></i></a>
         </nav>
         {% block body %}{% endblock %}
     </body>

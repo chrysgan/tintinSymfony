@@ -16,6 +16,27 @@ class ObjetRepository extends ServiceEntityRepository
         parent::__construct($registry, Objet::class);
     }
 
+    public function countAllActive(): int {
+         return (int) $this->createQueryBuilder('p')
+            ->select('COUNT(p.id)')
+            ->where('p.actif = true')
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
+
+    public function findAllWithSerie($limit,$offset) : array {
+            
+        return $this->createQueryBuilder('p')
+            ->leftJoin('p.serie', 's')
+            ->addSelect('s')
+            ->where('p.actif = true')
+            ->orderBy('p.id', 'ASC')
+            ->setMaxResults($limit)
+            ->setFirstResult($offset)
+            ->getQuery()
+            ->getResult();
+    }
+
     //    /**
     //     * @return Objet[] Returns an array of Objet objects
     //     */

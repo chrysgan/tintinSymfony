@@ -9,8 +9,8 @@
     box-sizing: border-box ;
 }
 
-.fa-user {
-    color: var(--main-color)
+.fa-color{
+  color: var(--main-color) ;
 }
 
 @font-face {
@@ -52,6 +52,7 @@ body {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    z-index:1000;
 }
 
 .logo {

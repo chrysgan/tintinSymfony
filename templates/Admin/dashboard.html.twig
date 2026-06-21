@@ -1,1 +1,8 @@
 {% extends '@EasyAdmin/page/content.html.twig' %}
+
+{% block header_logo %}
+    <a class="logo" title="{{ ea.dashboardTitle|striptags }}" href="/">
+        <span class="logo-custom">{{ ea.dashboardTitle|raw }}</span>
+        <span class="logo-compact"><i class="fas fa-home"></i></span>
+    </a>
+{% endblock %}

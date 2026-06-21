@@ -1,20 +1,88 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello GalleryController!{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="{{ asset('styles/gallery.css') }}">
+{% endblock %}
+
+{% block title %}Galerie{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+    {# TODO : Ce container ne doit pas passer au dessus de la navbar #}
+    <main class="gallery-page">
+        <section class="gallery-grid">
+            
+            {% for objet in objets %}
+                <article class="gallery-card">
+                    <div class="gallery-card__image">
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                        {% set imagePrincipale = objet.objetImages|first %}
+                        {% for objetImage in objet.objetImages %}
+                            {% if objetImage.ordre == 1 %}
+                                {% set imagePrincipale = objetImage %}
+                            {% endif %}
+                        {% endfor %}
+                        {% if imagePrincipale %}
+                            <img 
+                                src="{{ asset('images/objet/' ~ imagePrincipale.image) }}" 
+                                alt="{{ objet.nom }}"
+                            >
+                        {% else %}
+                            <img 
+                                src="{{ asset('images/objet/000000.PNG') }}" 
+                                alt="Image non disponible"
+                            >
+                        {% endif %}
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>/home/morgan/WebProjects/tintinSymfony/src/Controller/GalleryController.php</code></li>
-        <li>Your template at <code>/home/morgan/WebProjects/tintinSymfony/templates/gallery/index.html.twig</code></li>
-    </ul>
-</div>
+                        {# TODO: rendre la balise a invisible si le user n'a pas le role admin #}
+                        <a class="fa-color" href="{{ url('app_admin') }}/objet/{{ objet.id }}/edit"><i class="fa-regular fa-pen-to-square"></i></a>
+                        <p>{{ objet.editeur.nom}}</p>
+                    
+                    </div>
+
+                    <div class="gallery-card__content">
+                        <h2>{{ objet.nom }}</h2>
+
+                        <p class="gallery-card__meta">
+                            
+                            {% if objet.serie == true %}
+                                {{ objet.serie.nom }} - 
+                            {% endif %}
+                            {{ objet.annee }}
+                        </p>
+
+                        <p class="gallery-card__category">
+                            
+                        </p>
+                    </div>
+                </article>
+            {% else %}
+                <p>Aucun objet à afficher pour le moment.</p>
+            {% endfor %}
+        </section>
+
+        {% if totalPages > 1 %}
+            <nav class="pagination" aria-label="Pagination">
+                <a href="{{ path('app_gallery', {page: 1}) }}" class="pagination__link "><<</a>
+                <a href="{{ path('app_gallery', {page: currentPage - 10}) }}" class="pagination__link "><</a>
+                {% if currentPage <= 3 %}
+                    {% set startPage = 1 %}
+                    {% set endPage = 7 %}
+                {% elseif currentPage >= totalPages - 3 %}
+                        {% set startPage = totalPages - 6 %}
+                        {% set endPage = totalPages %}
+                {% else %}
+                        {% set startPage = currentPage - 3 %}
+                        {% set endPage = currentPage + 3 %}
+                {% endif %}                    
+                {% for page in startPage..endPage %}
+                    {% if page > 0 and page <= totalPages %}
+                    <a href="{{ path('app_gallery', { page: page }) }}" class="pagination__link {{ page == currentPage ? 'is-active' : '' }}">{{ page }}</a>
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ path('app_gallery', {page: currentPage + 10}) }}" class="pagination__link ">></a>
+                <a href="{{ path('app_gallery', {page: totalPages}) }}" class="pagination__link ">>></a>
+            </nav>
+        {% endif %}
+    </main>
 {% endblock %}
