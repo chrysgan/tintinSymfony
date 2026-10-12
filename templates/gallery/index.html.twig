@@ -1,5 +1,10 @@
 {% extends 'base.html.twig' %}
 
+{% block javascripts %}
+    {{ parent() }}
+    <script src="{{asset('/js/gallery.js')}}"></script>
+{% endblock %}
+
 {% block stylesheets %}
     {{ parent() }}
     <link rel="stylesheet" href="{{ asset('styles/gallery.css') }}">
@@ -12,10 +17,26 @@
     <main class="gallery-page">
         <section class="gallery-grid">
             
+            {# BOUCLE DE CREATION DES CARTES #}
             {% for objet in objets %}
+                {# DEBUT CARTE #}
                 <article class="gallery-card">
-                    <div class="gallery-card__image">
-
+                    {# ZONE IMAGE #}
+                    <div class="gallery-card__image" 
+                        data-description="{{ objet.description }}"
+                        data-serie="{{ objet.serie ? objet.serie.nom|e('html_attr') : '' }}"
+                        data-annee="{{ objet.annee }}"
+                        data-images='[
+                            {% for objetImage in objet.objetImages %}
+                                {% if objetImage.ordre != 1 %}
+                                    "{{ asset('images/objet/' ~ objetImage.image) }}"{% if not loop.last %},{% endif %}
+                                {% endif %}
+                            {% endfor %}
+                        ]'
+                        
+                        
+                        
+                        >
                         {% set imagePrincipale = objet.objetImages|first %}
                         {% for objetImage in objet.objetImages %}
                             {% if objetImage.ordre == 1 %}
@@ -23,44 +44,47 @@
                             {% endif %}
                         {% endfor %}
                         {% if imagePrincipale %}
-                            <img 
-                                src="{{ asset('images/objet/' ~ imagePrincipale.image) }}" 
-                                alt="{{ objet.nom }}"
-                            >
+                            <img src="{{ asset('images/objet/' ~ imagePrincipale.image) }}" alt="{{ objet.nom }}" data-id="{{objet.id}}">
                         {% else %}
-                            <img 
-                                src="{{ asset('images/objet/000000.PNG') }}" 
-                                alt="Image non disponible"
-                            >
+                            <img src="{{ asset('images/objet/000000.PNG') }}" alt="Image non disponible">
                         {% endif %}
-
                         {# TODO: rendre la balise a invisible si le user n'a pas le role admin #}
+                        {# LIEN MODIF ADMIN #}
                         <a class="fa-color" href="{{ url('app_admin') }}/objet/{{ objet.id }}/edit"><i class="fa-regular fa-pen-to-square"></i></a>
                         <p>{{ objet.editeur.nom}}</p>
-                    
                     </div>
-
+                    {# ZONE CONTENT #}
                     <div class="gallery-card__content">
                         <h2>{{ objet.nom }}</h2>
-
                         <p class="gallery-card__meta">
-                            
                             {% if objet.serie == true %}
                                 {{ objet.serie.nom }} - 
                             {% endif %}
                             {{ objet.annee }}
                         </p>
-
-                        <p class="gallery-card__category">
-                            
-                        </p>
                     </div>
                 </article>
+                {# FIN DE CARTE #}
             {% else %}
                 <p>Aucun objet à afficher pour le moment.</p>
             {% endfor %}
+            
+            {# POPUP #}
+            <div class="popup" id="popup" data-modal="popup" aria-hidden="true">
+                <div class="popup-content">
+                    <button class="popup-close" type="button">&times;</button>
+                    <h2 id="modalTitle"></h2>
+                    <p id="modalMeta"></p>
+                    <p id="modalDescription"></p>
+                    <div class="popup-carousel">
+                        <button class="carousel-prev" type="button">‹</button>
+                        <img class= "carousel-image" id="popup-image" src="" alt="">
+                        <button class="carousel-next" type="button">›</button>
+                    </div>
+                </div>
+            </div>
         </section>
-
+        {# PAGINATION #}
         {% if totalPages > 1 %}
             <nav class="pagination" aria-label="Pagination">
                 <a href="{{ path('app_gallery', {page: 1}) }}" class="pagination__link "><<</a>
