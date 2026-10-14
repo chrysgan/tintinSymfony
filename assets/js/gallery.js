@@ -1,17 +1,6 @@
 document.addEventListener('turbo:load', () => {
-    
-    const galleryCardsImages = document.querySelectorAll('.gallery-card__image');
-    galleryCardsImages.forEach(image => {
-        image.addEventListener('click', () => {
-           popup.style.display = 'block';
-        });
-    });
     const popup = document.getElementById('popup');
- 
-    // popup.addEventListener('click', (event) => {
-    //        popup.style.display = 'none';
-    //     });
-    
+
     if (!popup) {
         return;
     }
@@ -27,12 +16,6 @@ document.addEventListener('turbo:load', () => {
 
     let images = [];
     let currentIndex = 0;
-
-   images.forEach(image => {
-        image.addEventListener('click', (event) => {
-           popup.style.display = 'block';
-        });
-    });
 
     const closeModal = () => {
         popup.classList.remove('active');
@@ -50,13 +33,20 @@ document.addEventListener('turbo:load', () => {
                 return;
             }
 
-            title.textContent = card.dataset.title;
-            description.textContent = card.dataset.description;
-            meta.textContent = `${card.dataset.serie} - ${card.dataset.annee}`;
+            // Les data-* sont portés par la zone image, pas par la carte
+            const data = card.querySelector('.gallery-card__image').dataset;
 
-            images = JSON.parse(card.dataset.images || '[]');
+            title.textContent = card.querySelector('h2').textContent;
+            description.textContent = data.description;
+            meta.textContent = [data.serie, data.annee].filter(Boolean).join(' - ');
+
+            images = JSON.parse(data.images || '[]');
             currentIndex = 0;
             showImage();
+
+            // Pas de flèches s'il n'y a rien à faire défiler
+            prevBtn.classList.toggle('hidden', images.length <= 1);
+            nextBtn.classList.toggle('hidden', images.length <= 1);
 
             popup.classList.add('active');
             popup.setAttribute('aria-hidden', 'false');

@@ -12,7 +12,6 @@ use Symfony\Component\HttpFoundation\Response;
 class DashboardController extends AbstractDashboardController
 {
     // TODO : faire mes requetes persos d'administration
-    // TODO ; lien vers l'accueil
     public function index(): Response
     {
 //        return parent::index();
@@ -50,5 +49,7 @@ class DashboardController extends AbstractDashboardController
         yield MenuItem::linkTo(PersonnageCrudController::class, 'Personnage', 'fa-duotone fa-solid fa-people-group');
         yield MenuItem::linkTo(PaysCrudController::class, 'Pays', 'fa-duotone fa-solid fa-earth-europe');
         yield MenuItem::linkTo(UserCrudController::class, 'User', 'fa-duotone fa-solid fa-circle-user');
+        yield MenuItem::section();
+        yield MenuItem::linkToUrl('Retour au site', 'fa fa-arrow-left', $this->generateUrl('app_home'));
     }
 }

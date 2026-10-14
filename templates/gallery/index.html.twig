@@ -20,29 +20,21 @@
             {# BOUCLE DE CREATION DES CARTES #}
             {% for objet in objets %}
                 {# DEBUT CARTE #}
+                {# Toutes les images de l'objet pour le carrousel, déjà triées par ordre (OrderBy dans l'entité) #}
+                {% set imagesCarrousel = [] %}
+                {% for objetImage in objet.objetImages %}
+                    {% set imagesCarrousel = imagesCarrousel|merge([asset('images/objet/' ~ objetImage.image)]) %}
+                {% endfor %}
                 <article class="gallery-card">
                     {# ZONE IMAGE #}
-                    <div class="gallery-card__image" 
+                    <div class="gallery-card__image"
                         data-description="{{ objet.description }}"
                         data-serie="{{ objet.serie ? objet.serie.nom|e('html_attr') : '' }}"
                         data-annee="{{ objet.annee }}"
-                        data-images='[
-                            {% for objetImage in objet.objetImages %}
-                                {% if objetImage.ordre != 1 %}
-                                    "{{ asset('images/objet/' ~ objetImage.image) }}"{% if not loop.last %},{% endif %}
-                                {% endif %}
-                            {% endfor %}
-                        ]'
-                        
-                        
-                        
+                        data-images="{{ imagesCarrousel|json_encode|e('html_attr') }}"
                         >
+                        {# Les images étant triées par ordre, la première est l'image principale #}
                         {% set imagePrincipale = objet.objetImages|first %}
-                        {% for objetImage in objet.objetImages %}
-                            {% if objetImage.ordre == 1 %}
-                                {% set imagePrincipale = objetImage %}
-                            {% endif %}
-                        {% endfor %}
                         {% if imagePrincipale %}
                             <img src="{{ asset('images/objet/' ~ imagePrincipale.image) }}" alt="{{ objet.nom }}" data-id="{{objet.id}}">
                         {% else %}
@@ -76,9 +68,9 @@
                     <h2 id="modalTitle"></h2>
                     <p id="modalMeta"></p>
                     <p id="modalDescription"></p>
-                    <div class="popup-carousel">
+                    <div class="carousel">
                         <button class="carousel-prev" type="button">‹</button>
-                        <img class= "carousel-image" id="popup-image" src="" alt="">
+                        <img class="popup-image" id="popup-image" src="" alt="">
                         <button class="carousel-next" type="button">›</button>
                     </div>
                 </div>

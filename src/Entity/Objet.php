@@ -83,6 +83,7 @@ class Objet
      * @var Collection<int, ObjetImage>
      */
     #[ORM\OneToMany(targetEntity: ObjetImage::class, mappedBy: 'objet', cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OrderBy(['ordre' => 'ASC'])]
     private Collection $objetImages;
     // persist : quand tu ajoutes une image depuis le formulaire de l’objet, Doctrine la sauvegarde aussi
     // remove : si tu supprimes l’objet, ses images suivent
